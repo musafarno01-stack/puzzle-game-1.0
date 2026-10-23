@@ -1,0 +1,26 @@
+config_version=5
+
+[application]
+
+config/name="Prism Blocks"
+config/description="An original 8x8 endless drag-and-place block puzzle game for Android & iOS."
+run/main_scene="res://scenes/main.tscn"
+config/features=PackedStringArray("4.2", "Forward Plus")
+config/icon="res://assets/textures/icon.png"
+
+[display]
+
+window/size/viewport_width=720
+window/size/viewport_height=1280
+window/size/mode=0
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep"
+window/handheld/orientation=1
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=1
