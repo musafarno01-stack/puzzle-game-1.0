@@ -1,0 +1,42 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Compile APK with Godot 4
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.2.1
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Verify Project Root
+        run: |
+          if [ ! -f "project.godot" ]; then
+            echo "ERROR: project.godot not found at repository root!"
+            exit 1
+          fi
+
+      - name: Setup Export Templates
+        run: |
+          mkdir -p ~/.local/share/godot/export_templates/4.2.1.stable
+          if [ -d "/root/.local/share/godot/export_templates/4.2.1.stable" ]; then
+            cp -r /root/.local/share/godot/export_templates/4.2.1.stable/* ~/.local/share/godot/export_templates/4.2.1.stable/ || true
+          fi
+
+      - name: Make Build Directory
+        run: mkdir -p build/android
+
+      - name: Run Godot Android Export
+        run: godot --headless --export-debug "Android" build/android/PrismBlocks.apk
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: PrismBlocks-Android-APK
+          path: build/android/PrismBlocks.apk
